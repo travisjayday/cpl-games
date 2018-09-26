@@ -1,3 +1,4 @@
+
 <html>
 	<head>
 		<style>
@@ -36,15 +37,15 @@
 			.floating-div {
 				display: inline-block;
 				width: 280px; 
-				
+				background-color: var(--primary-color);	
+				margin: 10px;
 				box-shadow: 0px 0px 10px rgba(0,0,0,.8);
 				text-align: center;
 			}
 			
-			#members {
+			.subheading{
 				margin-top: 0px; 
 				margin-left: 20px; 
-				margin-bottom: 30px;
 			}
 
 			#container {
@@ -73,14 +74,22 @@
 				font-family: "Helvetica", Helvetica;
 			}
 
-
 			#member-container {
-				column-width: 280px;
+				column-width: 290px;
 				column-gap: 0px; 
 				margin: auto;
 				padding: 20px 0;
 			}
+
+			#references {
+				height: 200px;
+				width: 100%;
+				float: bottom;
+				padding-top: 10px;
+				margin-left: 20px;
+			}
 		</style>
+
 	</head>
 
 	<body>
@@ -90,7 +99,7 @@
 
 		<div id='container'>
 
-		<div id='members'>
+		<div class='subheading'>
 			<h2>Members</h2>
 		</div>
 	
@@ -126,11 +135,21 @@
 				<h1>Claudia</h1>
 				<div class='link'><a href='/members/travis/pong.html'>Claudia Pong</a></div>
 			</div>
-
 		</div>
 
-
+		<div class='subheading'>
+			<h2>References</h2>
+		</div>
+	
+		<div id='references'> 
+		<a style='color: black;float: bottom' href='http://cplclub.ml'><i>http://cplclub.ml</i></a>
+		<br>
+		<a style='color: black;float: bottom' href='https://github.com/travisjayday/cpl-games'><i>https://github.com/travisjayday/cpl-games</i></a>
+		<br>
+		<a style='color: black;float: bottom' href='https://github.com/travisjayday/cpl_club'><i>https://github.com/travisjayday/cpl_club</i></a>
 		</div>
 
+		</div>
 	</body>
 </html>
+

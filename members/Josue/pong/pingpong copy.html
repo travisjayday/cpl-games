@@ -1,0 +1,182 @@
+<html>
+	<head>
+		<script> 
+		var randomX = [".2", "-.2",".3","-.3",".4","-.4"];
+		var randomY = [".2", "-.2",".3","-.3",".4","-.4"];
+		var startx = randomX[Math.floor(Math.random()*randomX.length)];
+		var starty = randomY[Math.floor(Math.random()*randomY.length)];
+		var Context;
+		var player1_y = 110;
+		var player2_y = 110;
+		var player1_x = 20;
+		var player2_x = 360;
+		var ballx = 200;
+		var bally = 150;
+		var ballxspeed = Number(startx);
+		var ballyspeed = Number(starty);
+		var player1_score = 0;
+		var player2_score = 0;
+		var bouncesound = new Audio("bouncefx.wav");
+		
+		onkeydown = function(key) {
+			
+			if (key.keyCode == 87 && player1_y > 0) {
+				player1_y -= 20;
+
+			}
+			if (key.keyCode == 83 && player1_y < 220) {
+				player1_y += 20;
+
+			}
+
+			if (key.keyCode == 38 && player2_y > 0) {
+				player2_y -= 20;
+
+			}
+			if (key.keyCode == 40 && player2_y < 220) {
+				player2_y += 20;
+			}
+		} 
+
+
+
+		function Score() {
+
+		if(ballx <  0) {
+		player2_score += 1
+		ballx = 200
+		bally = 150
+		ballxspeed = Number(startx)
+		ballyspeed = Number(starty)
+		}
+
+		if(ballx > 400) {
+		player1_score += 1
+		ballx = 200
+		bally = 150
+		ballxspeed = Number(startx)
+		ballyspeed = Number(starty)
+
+		}
+		Win()
+		}
+
+		function Win() {
+
+		if (player1_score == 3) {
+
+		alert("PLAYER 1 WON");
+		
+  
+		}
+		if (player2_score == 3) {
+
+		alert("PLAYER 2 WON");
+    	
+		}
+		}
+
+
+		function balldir() {
+		
+		ballx += ballxspeed
+		bally += ballyspeed
+
+		if (bally < 6 || bally > 294) {
+			ballyspeed *= -1
+		}
+		}
+
+		function Collision() {
+
+		//player1 right side
+		if (ballx > player1_x && ballx < player1_x + 26) {
+		if (bally > player1_y - 6 && bally < player1_y + 86) {
+			ballxspeed -= .1
+			ballxspeed *= -1
+			bouncesound.play();
+
+		}
+		}
+
+		//player1 bottom
+		//if (ballx > player1_x && ballx < player1_x + 20) {
+		//if (bally < player1_y + 86 && bally > player1_y - 86) {
+			//ballyspeed *= -1
+		//}
+		//}
+
+	
+		//player2 left 
+		if (ballx > player2_x - 6 && ballx < player2_x) {
+		if (bally > player2_y - 6 && bally < player2_y + 80) {
+			ballxspeed += .1
+			ballxspeed *= -1
+			bouncesound.play();
+			
+		} 
+		}
+		//player2 bottom
+		if (ballx > player2_x && ballx < player2_x + 20) {
+		if (bally < player2_y + 86 && bally > player2_y - 86) {
+			ballyspeed *= -1
+		
+		}
+		}
+		//player2 top
+		if  (ballx > player2_x && ballx < player2_x + 26) {
+		if (bally < player2_y + 6 && bally > player2_y - 86) {
+			ballyspeed *= -1
+
+
+		}
+		}
+
+		}
+	
+		function initCanvas() { 
+
+			var canvasObject = document.getElementById('myCanvas');
+			Context = canvasObject.getContext('2d');
+			setInterval(Collision, 1);
+			setInterval(balldir, 1);
+			setInterval(Score, 1);
+			setInterval(draw, 1);
+
+		}
+
+
+		function draw() {
+			
+			//update screen
+			Context.fillStyle = 'black';
+			Context.fillRect(0, 0, 400 ,300);
+
+			//player 1
+			Context.fillStyle = 'white';
+			Context.fillRect(player1_x, player1_y, 20, 80);
+			//player 2
+			Context.fillStyle = 'white';
+			Context.fillRect(player2_x, player2_y, 20, 80);
+			//ball
+			Context.fillStyle = 'red';
+			Context.beginPath();
+			Context.arc(ballx, bally, 6, 0, 2*Math.PI);
+			Context.fill()
+			Context.closePath();
+	
+			Context.font = "16px Arial";
+    		Context.fillStyle = "white";
+    		Context.fillText(player1_score + " | " + player2_score, 185, 20);
+
+    	}
+		
+		</script>
+	</head>
+		
+	<body onload='initCanvas()'>
+		<canvas id = 'myCanvas' width='400px' height='300px'></canvas>
+		
+	</body>
+
+</html>

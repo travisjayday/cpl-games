@@ -1,0 +1,153 @@
+<html>
+	<head>
+		<script>
+			var canvas;
+			var ctx;
+
+			var play1 = {y:0, height:50, width:10, spd:9};  
+			var play2 = {y:0, height:50, width:10, spd:9};
+			var ball = {x:0, y:0, radius:5, spd:5, velX:-1, velY:.5}; 
+
+			var keyboard = {};
+		
+			var aiOn = false;
+
+			onkeydown = function(event) {
+				keyboard[event.keyCode] = true;
+			}
+
+			onkeyup = function(event) {
+				keyboard[event.keyCode] = false;
+			}
+
+			function initCanvas() {
+				canvas = document.getElementById('gl');
+				ctx = canvas.getContext('2d');
+
+				reset();
+
+				setInterval(draw, 20)  
+				setInterval(physics, 20) 
+				setInterval(handleKeyboard, 60) 
+			}
+
+			function physics() {
+				ball.x += ball.velX;
+				ball.y += ball.velY; 
+
+				if (ball.x < 10 + play1.width) {
+					if ((ball.y + ball.radius) > play1.y && 
+						(ball.y - ball.radius) < play1.y + play1.height) {
+						ball.velX *= -1;  
+						//ball.velY = -0.015 * ((play1.y + play1.height / 2) - ball.y )
+					}
+				}
+				
+				if (ball.x > canvas.width - 10 - play2.width) {
+					if ((ball.y + ball.radius) > play2.y && 
+						(ball.y - ball.radius) < play2.y + play2.height) {
+						ball.velX *= -1; 
+						//ball.velY = -0.015 * ((play2.y + play2.height / 2) - ball.y )
+					}
+				}
+
+				if (ball.x < -10 || ball.x > canvas.width + 10) 
+					reset()
+
+				if (ball.y < 0 || ball.y > canvas.height) 
+					ball.velY *= -1;
+
+				if (aiOn) {
+					if (ball.y > (play2.y + play2.height / 2 + 5)) 
+						play2.y += play2.spd
+					if (ball.y < (play2.y + play2.height / 2 - 5)) 
+						play2.y -= play2.spd
+				}
+			}
+
+			function reset() {
+				play1.y = canvas.height / 2 - play1.height / 2;
+				play2.y = play1.y 
+
+				ball.x = canvas.width / 2 - ball.radius / 2; 
+				ball.y = canvas.height / 2 - ball.radius / 2; 
+
+				ball.velX = Math.random();
+				ball.velY = Math.sqrt(ball.spd * ball.spd - ball.velX * ball.velX); 
+
+				if (ball.velY > ball.velX) {
+					var t = ball.velY;
+					ball.velY = ball.velX; 
+					ball.velX = t
+				}
+				
+				if (ball.velY < ball.spd /2) 
+					ball.velY = ball.spd / 2
+	
+				if (Math.random() - 0.5 > 0) 
+					ball.velX *= -1
+
+				if (Math.random() - 0.5 > 0) 
+					ball.velY *= -1
+				//alert('x: ' + ball.velX + ' y: ' + ball.velY + 'sqr: ' + Math.sqrt(ball.velX * ball.velX + ball.velY * ball.velY))
+
+				keyboard = {};
+			}
+
+			function draw() {
+				ctx.fillStyle = 'black'
+				ctx.fillRect(0, 0, canvas.width-1, canvas.height-1) 
+
+				ctx.fillStyle = 'white'
+				ctx.fillRect(10, play1.y, play1.width, play1.height) 
+				ctx.fillRect(canvas.width - play2.width - 10, play2.y, play2.width, play2.height) 
+
+				ctx.beginPath();
+				ctx.arc(ball.x, ball.y, ball.radius, 0, 2 * Math.PI);
+				ctx.fill()
+			}
+
+			function handleKeyboard() {
+				if (keyboard['W'.charCodeAt(0)]) 
+					move(1, 'up')
+
+				if (keyboard['S'.charCodeAt(0)])
+					move(1, 'down')
+
+				if (!aiOn) {
+					if (keyboard[38]) 
+						move(2, 'up')
+
+					if (keyboard[40])
+						move(2, 'down')
+				}
+			}
+
+			function move(player, dir) { 
+				if (player == 1) {
+					if (dir === 'up') 
+						play1.y -= play1.spd
+					else 
+						play1.y += play1.spd
+				}
+				else {
+					if (dir == 'up')
+						play2.y -= play2.spd
+					else
+						play2.y += play2.spd
+				}
+			}
+
+			function toggleAI() {
+				aiOn = !aiOn
+			}
+
+		</script>
+	</head>
+
+	<body onload='initCanvas()'>
+		<canvas id='gl' width='320px' height='280px'></canvas>
+		<br>
+		AI On: <input onClick='toggleAI()' checked='true' type='checkbox'></input>
+	</body>
+</html>

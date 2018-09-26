@@ -1,0 +1,62 @@
+<html>
+	<head>
+		<style>
+		.hbox {
+			background-color:#eeeeee;
+			padding: 10px;
+			text-align:center;
+			font-family:serif;
+		} 
+		.links {
+			text-align:center;
+			font-family:serif;
+		p {
+			text-align:center;
+			font-family:'Times New Roman', Times, serif;
+		 }
+		</style>
+		
+		<script>
+		function myFunction() {
+		var value = document.getElementById('text').value;
+		location.href='https://www.google.com/search?q='+ value;
+		}
+		</script>
+	</head>
+	<body>
+		<div style='text-align:center;'/>
+
+			<img src='https://heavyeditorial.files.wordpress.com/2015/01/1998-copy.jpg' style='height:100px; align:middle;'/>
+		</div>
+		<div class='hbox'>
+			<p>Search the web using Google!</p>
+			<input type='text'id='text'/>
+			<br>
+			<select style='text-align:center;'/>
+			  <option>10 results </option>
+			  <option>25 results</option>
+			  <option>50 results</option>
+			</select>
+			<button onclick="myFunction()">Google Search</button>
+			<button>I'm feeling lucky</button>
+			<br>
+			<p><i>Index contains~25 million pages(soon to be much bigger)</p></i>
+		</div>
+		<div class='link' style='padding-top:50px;padding-bottom:10px;display:block;text-align:center;'>
+			 <a style='font-size:30px;' href='https://www.google.com/intl/en-GB/about/'> <b> ABOUT GOOGLE </a></b>
+			 <br>
+			 <a href='https://www.stanford.edu/'>Stanford Search</a>
+			 <a href='https://www.linux.org/'>Linux Search</a>
+		</div>
+		<div class='hbox' style='margin:0px;'>
+		<p>Get Google updates monthly!<p>
+		<input type='text'placeholder='your e-mail'/>
+		<button>Suscribe</button>
+		<a href='https://www.google.com/contact/'> Archive</a>
+		</div>
+		<div class='links'>
+		<p style='font-size:11px;'> Copyright &copy 2018 Claudia Lozano</p>
+		</div>
+		
+		</body>
+	</html>

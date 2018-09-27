@@ -1,8 +1,8 @@
 var ballX = 1000;
 var ballY = 400;
 var context;
-var dirX = 2;
-var dirY = 2;
+var dirX = 4;
+var dirY = 4;
 var bscore = 0;
 var rscore = 0;
 var cL = 210;
@@ -46,16 +46,16 @@ function ballMove() {
     ballX = ballX + dirX;
     ballY = ballY + dirY;
     if ((ballY + 10) >= cD) {
-        dirY = -2;
+        dirY = -4;
     }
     if ((ballY - 10) <= cU) {
-        dirY = 2;
+        dirY = 4;
     }
     if (((ballX + 10) >= cR - 18) && ((ballY + 10) > rect2Y) && ((ballY - 10) < (rect2Y + 75)) && (ballX < cR)) {
-        dirX = -2;
+        dirX = -4;
     }
     if (((ballX - 10) <= cL + 18) && ((ballY + 10) > rect1Y) && ((ballY - 10) < (rect1Y + 75)) && (ballX > cL)) {
-        dirX = 2;
+        dirX = 4;
     }
 }
 function paddle1Up() {
@@ -95,7 +95,7 @@ function draw() {
     context.fillRect(cL + 5, rect1Y, 13, 75);
     context.fillRect(cR - 18, rect2Y, 13, 75);
 
-    context.fillStyle = 'red';
+    context.fillStyle = 'green';
     context.beginPath();
     context.arc(ballX, ballY, ballSize, 0, 2 * Math.PI);
     context.fill();

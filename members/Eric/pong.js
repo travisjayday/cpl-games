@@ -1,8 +1,8 @@
 var ballX = 1000;
 var ballY = 400;
 var context;
-var dirX = 4;
-var dirY = 4;
+var dirX = 1;
+var dirY = 1;
 var bscore = 0;
 var rscore = 0;
 var cL = 210;
@@ -46,16 +46,18 @@ function ballMove() {
     ballX = ballX + dirX;
     ballY = ballY + dirY;
     if ((ballY + 10) >= cD) {
-        dirY = -4;
+        dirY = -dirY;
     }
     if ((ballY - 10) <= cU) {
-        dirY = 4;
+        dirY = dirY;
     }
     if (((ballX + 10) >= cR - 18) && ((ballY + 10) > rect2Y) && ((ballY - 10) < (rect2Y + 75)) && (ballX < cR)) {
-        dirX = -4;
+        dirX = -dirX;
+        dirX+= 0.001;
     }
     if (((ballX - 10) <= cL + 18) && ((ballY + 10) > rect1Y) && ((ballY - 10) < (rect1Y + 75)) && (ballX > cL)) {
-        dirX = 4;
+        dirX = dirX;
+        dirx+= 0.001;
     }
 }
 function paddle1Up() {

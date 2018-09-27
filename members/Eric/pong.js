@@ -97,7 +97,7 @@ function draw() {
     context.fillRect(cL + 5, rect1Y, 13, 75);
     context.fillRect(cR - 18, rect2Y, 13, 75);
 
-    context.fillStyle = 'green';
+    context.fillStyle = 'red';
     context.beginPath();
     context.arc(ballX, ballY, ballSize, 0, 2 * Math.PI);
     context.fill();

@@ -1,8 +1,8 @@
 var ballX = 1000;
 var ballY = 400;
 var context;
-var dirX = 1;
-var dirY = 1;
+var dirX = 2;
+var dirY = 2;
 var bscore = 0;
 var rscore = 0;
 var cL = 210;

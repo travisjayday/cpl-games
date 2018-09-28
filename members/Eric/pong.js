@@ -46,18 +46,18 @@ function ballMove() {
     ballX = ballX + dirX;
     ballY = ballY + dirY;
     if ((ballY + 10) >= cD) {
-        dirY = -dirY;
+        dirY = -1 * dirY;
     }
     if ((ballY - 10) <= cU) {
-        dirY = dirY;
+        dirY = -1 * dirY;
     }
     if (((ballX + 10) >= cR - 18) && ((ballY + 10) > rect2Y) && ((ballY - 10) < (rect2Y + 75)) && (ballX < cR)) {
         dirX = -dirX;
-        dirX+= 0.001;
+        dirX = dirX * 1.01;
     }
     if (((ballX - 10) <= cL + 18) && ((ballY + 10) > rect1Y) && ((ballY - 10) < (rect1Y + 75)) && (ballX > cL)) {
         dirX = dirX;
-        dirx+= 0.001;
+        dirx = dirX * 1.01;
     }
 }
 function paddle1Up() {

@@ -12,19 +12,33 @@ var cD = 605;
 var rect1Y = cU + 1;
 var rect2Y = cU + 1;
 var ballSize = 10;
+var keyboard = {};
 
-onkeydown = function (key) {
-    if (key.keyCode == 38) {
-        paddle2Up();
-    }
-    if (key.keyCode == 40) {
-        paddle2Down();
-    }
-    if (key.keyCode == 87) {
+
+
+onkeydown = function (event) {
+    keyboard[event.keyCode] = true;
+}
+
+onkeyup = function (event) {
+    keyboard[event.keyCode] = false;
+}
+
+function player1Move(){
+    if (keyboard['W'.charCodeAt(0)]){
         paddle1Up();
     }
-    if (key.keyCode == 83) {
+    if (keyboard['S'.charCodeAt(0)]){
         paddle1Down();
+    }
+}
+
+function player2Move(){
+    if (keyboard[38]){
+        paddle2Up();
+    }
+    if (keyboard[40]){
+        paddle2Down();
     }
 }
 
@@ -32,38 +46,40 @@ function ballMove() {
     ballX = ballX + dirX;
     ballY = ballY + dirY;
     if ((ballY + 10) >= cD) {
-        dirY = -1;
+        dirY = -1 * dirY;
     }
     if ((ballY - 10) <= cU) {
-        dirY = 1;
+        dirY = -1 * dirY;
     }
     if (((ballX + 10) >= cR - 18) && ((ballY + 10) > rect2Y) && ((ballY - 10) < (rect2Y + 75)) && (ballX < cR)) {
-        dirX = -1;
+        dirX = -dirX;
+        dirX = dirX * 1.01;
     }
     if (((ballX - 10) <= cL + 18) && ((ballY + 10) > rect1Y) && ((ballY - 10) < (rect1Y + 75)) && (ballX > cL)) {
-        dirX = 1;
+        dirX = dirX;
+        dirx = dirX * 1.01;
     }
 }
 function paddle1Up() {
-    rect1Y = rect1Y - 10;
+    rect1Y = rect1Y - 2;
     if (rect1Y < cU) {
         rect1Y = cU;
     }
 }
 function paddle1Down() {
-    rect1Y = rect1Y + 10;
+    rect1Y = rect1Y + 2;
     if ((rect1Y + 75) > cD) {
         rect1Y = cD - 75;
     }
 }
 function paddle2Up() {
-    rect2Y = rect2Y - 10;
+    rect2Y = rect2Y - 2;
     if (rect2Y < cU) {
         rect2Y = cU;
     }
 }
 function paddle2Down() {
-    rect2Y = rect2Y + 10;
+    rect2Y = rect2Y + 2;
     if ((rect2Y + 75) > cD) {
         rect2Y = cD - 75;
     }
@@ -81,11 +97,14 @@ function draw() {
     context.fillRect(cL + 5, rect1Y, 13, 75);
     context.fillRect(cR - 18, rect2Y, 13, 75);
 
-    context.fillStyle = 'red';
+    context.fillStyle = 'green';
     context.beginPath();
     context.arc(ballX, ballY, ballSize, 0, 2 * Math.PI);
     context.fill();
     ballMove();
+
+    player1Move();
+    player2Move();
 
     if (ballX + 10 > cR) {
         bscore += 1;

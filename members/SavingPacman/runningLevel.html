@@ -8,6 +8,7 @@
         var ctx;
         var keyboard = {};
         var blob = new Player();
+        var pit = new Enemy(540, 430);
 
         function initCanvas() {
             var canvas = document.getElementById('canvas');
@@ -19,14 +20,21 @@
             ctx.fillStyle = 'black'
             ctx.fillRect(0, 0, 640, 480);
 
-            //PLAYER MOVEMENT
+            //SHOW PLAYER
             blob.show();
-            blob.jump();
-            blob.squish();
 
             //FLOOR
             ctx.fillStyle = 'red';
             ctx.fillRect(0, 430, 640, 50);
+
+            //PIT GEN
+            pit.show();
+            pit.move();
+
+            //PLAYER ACTIONS
+            blob.keyboardInput();
+            blob.jump();
+            blob.squish();
         }
 
     </script>

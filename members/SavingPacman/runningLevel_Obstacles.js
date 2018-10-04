@@ -1,17 +1,17 @@
 class Enemy {
-    constructor () {
-        this.x = 600;
-        this.y = 300;
-        this.height;
+    constructor (x, y) {
+        this.x = x;
+        this.y = y;
+        this.height = 50;
 
     }
 
     show () {
-        for (var i = 0; true; i++) {
-            if ((i % 50) == 0) {
-                ctx.fillStyle = 'green';
-                ctx.fillRect(this.x, this.y, 40, 180); 
-            }
-        }
+        ctx.fillStyle = 'black';
+        ctx.fillRect(this.x, this.y, 150, this.height);
+    }
+
+    move () {
+        this.x -= 8;
     }
 }

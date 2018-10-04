@@ -3,18 +3,8 @@ class Player {
         this.x = 50;
         this.y = 380;
         this.height = 50;
-        this.vel = -25;
+        this.vel = 20;
         this.acc = 1;
-
-        //KEY INPUT
-        onkeydown = function (event) {
-            keyboard[event.keyCode] = true;
-        }
-        onkeyup = function (event) {
-            if (event.keyCode == 40) {
-                keyboard[event.keyCode] = false;
-            }
-        }
     }
 
     show() {
@@ -23,26 +13,59 @@ class Player {
     }
 
     jump() {
-
         //JUMPS
         if (keyboard[38]) {
-            this.vel += 1.5 * this.acc;
-            this.y += this.vel;
+            this.vel -= this.acc;
+            this.y -= this.vel;
+
+            //HITS FLOOR
+            if (this.y > 380) {
+                keyboard[38] = false;
+                this.y = 380;
+                this.vel = 20;
+                this.acc = 1;
+            }
+
+            //IF DUCKS IN MID AIR
+            if (keyboard[40]) {
+                keyboard[38] = false;
+                this.vel = 20;
+                this.acc = 1;
+            }
         }
-        //HITS FLOOR
-        if (this.y > 380) {
+    }
+    squish() {
+        //DUCKS
+        if (keyboard[40]) {
             keyboard[38] = false;
-            this.y = 380;
-            this.vel = -25;
-            this.acc = 1;
+            this.vel += this.acc;
+            this.y += this.vel;
+
+            //HITS FLOOR
+            if (this.y > 405) {
+                this.vel = 20;
+                this.acc = 1;
+                this.y = 405;
+            }
+        }
+
+        //UNSQUISHES
+        if (this.y == 405) {
+            if (!keyboard[40]) {
+                this.vel = 20;
+                this.acc = 1;
+                this.y = 380;
+            }
         }
     }
 
-    squish() {
-        if (keyboard[40]) {
-            this.y += 15;
-            if (this.y > 380) {
-                this.y = 405;
+    keyboardInput() {
+        onkeydown = function (event) {
+            keyboard[event.keyCode] = true;
+        }
+        onkeyup = function (event) {
+            if (event.keyCode == 40) {
+                keyboard[event.keyCode] = false;
             }
         }
     }

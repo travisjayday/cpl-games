@@ -26,8 +26,8 @@ class Player {
 
         //JUMPS
         if (keyboard[38]) {
-            blob.vel += 1.5 * blob.acc;
-            blob.y += blob.vel;
+            this.vel += 1.5 * this.acc;
+            this.y += this.vel;
         }
         //HITS FLOOR
         if (this.y > 380) {
@@ -40,7 +40,10 @@ class Player {
 
     squish() {
         if (keyboard[40]) {
-            this.y = 405;
+            this.y += 15;
+            if (this.y > 380) {
+                this.y = 405;
+            }
         }
     }
 }

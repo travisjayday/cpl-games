@@ -1,0 +1,37 @@
+<html>
+
+<head>
+    <title>Saving Pacman</title>
+    <script src='runningLevel_Player.js'></script>
+    <script>
+        var ctx;
+        var keyboard = {};
+        var blob = new Player();
+
+        function initCanvas() {
+            var canvas = document.getElementById('canvas');
+            ctx = canvas.getContext('2d');
+            setInterval(draw, 20);
+        }
+        function draw() {
+            //BACKGROUND
+            ctx.fillStyle = 'black'
+            ctx.fillRect(0, 0, 640, 480);
+
+            blob.show();
+            blob.jump();
+            blob.squish();
+
+            //FLOOR
+            ctx.fillStyle = 'red';
+            ctx.fillRect(0, 430, 640, 50);
+        }
+
+    </script>
+</head>
+
+<body onload='initCanvas()'>
+    <canvas id='canvas' width='640px' height='480px'></canvas>
+</body>
+
+</html>

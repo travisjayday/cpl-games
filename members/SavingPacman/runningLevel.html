@@ -4,22 +4,38 @@
     <title>Saving Pacman</title>
     <script src='runningLevel_Player.js'></script>
     <script src='runningLevel_Pits.js'></script>
+    <script src='runningLevel_midGhosts.js'></script>
     <script>
         var ctx;
         var keyboard = {};
         var blob = new Player();
         var pits = [];
+        var ghosts = [];
+
+        //CREATES RANDOMIZED PITS
         for (var i = 0; i < 1000; i++) {
             if (i % 10 == 0) {
                 pits[i] = new Enemy((540 * Math.floor(Math.random() * 180) + 1500), 430);
             }
         }
+
+        //CREATES RANDOM GHOSTS
+        for (var i = 0; i < 1000; i++) {
+            if (i % 10 == 0) {
+                ghosts[i] = new midGhosts((300 * Math.floor(Math.random() * 300) + 1800));
+            }
+        }   
+
+        //INITIALIZES CANVAS
         function initCanvas() {
             var canvas = document.getElementById('canvas');
             ctx = canvas.getContext('2d');
             setInterval(draw, 20);
         }
+
+        //DRAWS
         function draw() {
+
             //BACKGROUND
             ctx.fillStyle = 'black'
             ctx.fillRect(0, 0, 640, 480);
@@ -31,11 +47,19 @@
             ctx.fillStyle = 'red';
             ctx.fillRect(0, 430, 640, 50);
 
-            //PIT GEN
+            //PIT OBJECTS DISPLAY
             for (var i = 0; i < 1000; i++) {
                 if (i % 10 == 0) {
                     pits[i].show();
                     pits[i].move();
+                }
+            }
+
+            //GHOST OBJECTS DISPLAY
+            for (var i = 0; i < 1000; i++) {
+                if (i % 10 == 0) {
+                    ghosts[i].show();
+                    ghosts[i].move();
                 }
             }
 

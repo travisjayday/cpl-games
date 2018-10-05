@@ -3,13 +3,17 @@
 <head>
     <title>Saving Pacman</title>
     <script src='runningLevel_Player.js'></script>
-    <script src='runningLevel_Obstacles.js'></script>
+    <script src='runningLevel_Pits.js'></script>
     <script>
         var ctx;
         var keyboard = {};
         var blob = new Player();
-        var pit = new Enemy(540, 430);
-
+        var pits = [];
+        for (var i = 0; i < 1000; i++) {
+            if (i % 10 == 0) {
+                pits[i] = new Enemy((540 * Math.floor(Math.random() * 180) + 1500), 430);
+            }
+        }
         function initCanvas() {
             var canvas = document.getElementById('canvas');
             ctx = canvas.getContext('2d');
@@ -28,8 +32,12 @@
             ctx.fillRect(0, 430, 640, 50);
 
             //PIT GEN
-            pit.show();
-            pit.move();
+            for (var i = 0; i < 1000; i++) {
+                if (i % 10 == 0) {
+                    pits[i].show();
+                    pits[i].move();
+                }
+            }
 
             //PLAYER ACTIONS
             blob.keyboardInput();

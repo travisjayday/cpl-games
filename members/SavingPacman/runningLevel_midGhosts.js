@@ -1,14 +1,14 @@
-class midGhosts {
+class midGhost {
     constructor(x) {
         this.x = x;
     }
 
     show() {
         ctx.fillStyle = 'green';
-        ctx.fillRect(this.x, 375, 75, 25);
+        ctx.fillRect(this.x, 385, 75, 25);
     }
 
     move() {
-        this.x -= 10;
+        this.x -= 9;
     }
 }

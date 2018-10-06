@@ -5,26 +5,29 @@
     <script src='runningLevel_Player.js'></script>
     <script src='runningLevel_Pits.js'></script>
     <script src='runningLevel_midGhosts.js'></script>
+    <script src='runningLevel_flyingGhosts.js'></script>
     <script>
         var ctx;
         var keyboard = {};
         var blob = new Player();
         var pits = [];
         var ghosts = [];
+        var flyingGhosts = [];
 
-        //CREATES RANDOMIZED PITS
-        for (var i = 0; i < 1000; i++) {
-            if (i % 10 == 0) {
-                pits[i] = new Enemy((540 * Math.floor(Math.random() * 180) + 1500), 430);
-            }
+        //CREATES PITS EVERY THREE-FOUR SECTIONS
+        for (var i = 0; i < 1; i++) {
+            pits[i] = new Pit(Math.floor(Math.random() * (2560 - 1920) + 1920));
         }
 
-        //CREATES RANDOM GHOSTS
-        for (var i = 0; i < 1000; i++) {
-            if (i % 10 == 0) {
-                ghosts[i] = new midGhosts((300 * Math.floor(Math.random() * 300) + 1800));
-            }
-        }   
+        //CREATES MIDGHOSTS EVERY TWO-THREE SECTIONS
+        for (var i = 0; i < 1; i++) {
+            ghosts[i] = new midGhost(Math.floor(Math.random() * (1920-1280) + 1280));
+        }
+
+        //CREATES FLYING GHOSTS EVERY FOUR-FIVE SECTIONS
+        for (var i = 0; i < 1; i++) {
+            flyingGhosts[i] = new flyingGhost(Math.floor(Math.random() * (3200-2560) + 2560));
+        }
 
         //INITIALIZES CANVAS
         function initCanvas() {
@@ -48,18 +51,47 @@
             ctx.fillRect(0, 430, 640, 50);
 
             //PIT OBJECTS DISPLAY
-            for (var i = 0; i < 1000; i++) {
-                if (i % 10 == 0) {
+            for (var i = 0; i < 1; i++) {
+                if (pits.length > 0) {
                     pits[i].show();
                     pits[i].move();
                 }
+                
+                if (pits[i].x + 150 < 0) {
+                    pits.pop();
+                    for (var i = 0; i < 1; i++) {
+                        pits[i] = new Pit(Math.floor(Math.random() * (1920 - 1280) + 1280));
+                    }
+                }
             }
 
-            //GHOST OBJECTS DISPLAY
-            for (var i = 0; i < 1000; i++) {
-                if (i % 10 == 0) {
+            //MIDGHOST OBJECTS DISPLAY
+            for (var i = 0; i < 1; i++) {
+                if (ghosts.length > 0) {
                     ghosts[i].show();
                     ghosts[i].move();
+                }
+
+                if (ghosts[i].x + 75 < 0) {
+                    ghosts.pop();
+                    for (var i = 0; i < 1; i++) {
+                        ghosts[i] = new midGhost((Math.floor(Math.random() * (1920-1280) + 1280)))
+                    }
+                }
+            }
+
+            //HIGH GHOST OBJECTS DISPLAY
+            for (var i = 0; i < 1; i++) {
+                if (flyingGhosts.length > 0) {
+                    flyingGhosts[i].show();
+                    flyingGhosts[i].move();
+                }
+
+                if (flyingGhosts[i].x + 50 < 0) {
+                    flyingGhosts.pop();
+                    for (var i = 0; i < 1; i++) {
+                        flyingGhosts[i] = new flyingGhost(Math.floor(Math.random() * (3200-2560) + 2560));
+                    }
                 }
             }
 

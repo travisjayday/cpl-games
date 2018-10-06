@@ -1,7 +1,7 @@
 class Player {
     constructor() {
         this.x = 50;
-        this.y = 330;
+        this.y = 380;
         this.vel = 20;
         this.acc = 1;
         this.otherVel = 10;
@@ -10,7 +10,7 @@ class Player {
 
     show() {
         ctx.fillStyle = 'white';
-        ctx.fillRect(this.x, this.y, 100, 100);
+        ctx.fillRect(this.x, this.y, 50, 50);
     }
 
     jump() {
@@ -20,31 +20,32 @@ class Player {
             this.y -= this.vel;
 
             //HITS FLOOR
-            if (this.y > 330) {
+            if (this.y > 380) {
                 keyboard[38] = false;
-                this.y = 330;
+                this.y = 380;
                 this.vel = 20;
                 this.acc = 1;
             }
         }
     }
+
     squish() {
 
         //DUCKS
         if (keyboard[40]) {
-            if(this.y < 330) {
+            if(this.y < 405) {
                 this.otherVel += this.otherAcc;
                 this.y += this.otherVel;
             }
 
-
-            if (this.y >= 330) {
-                keyboard[38] = false;
-                this.y = 380;
-            }
+            // if (this.y >= 405) {
+            //     keyboard[38] = false;
+            //     this.y = 405;
+            // }
 
             //HITS FLOOR
-            if (this.y > 380) {
+            if (this.y > 405) {
+                keyboard[38] = false;
                 this.vel = 20;
                 this.acc = 1;
                 this.y = 405;
@@ -52,11 +53,11 @@ class Player {
         }
 
         //UNSQUISHES
-        if (this.y == 380) {
+        if (this.y == 405) {
             if (!keyboard[40]) {
                 this.vel = 20;
                 this.acc = 1;
-                this.y = 330;
+                this.y = 380;
             }
         }
     }

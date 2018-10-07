@@ -1,6 +1,7 @@
 <html>
 <script>
 
+var startGame = false;
 var enemyDir = 1;
 var keyboard = {}
 var playerGravity;
@@ -10,7 +11,7 @@ var bottomPipes = [];
 var flyingEnemies = [];
 var randomTopLength;
 var randomBottomLength;
-var pipeSpeed = 1.5
+var pipeSpeed = 1.5;
 var gameLoop;
 var DistancePipes = 640 + 300
 
@@ -97,6 +98,12 @@ function draw(){
 //BG
 Context.fillStyle = "DeepSkyBlue";
 Context.fillRect(0,0,640,480);
+//Spacebar Pront
+if(startGame == false){
+    Context.fillStyle = "black"
+    Context.font = "35px Courier New"
+    Context.fillText("Press Spacerbar To Begin!",55, 450)
+}
 //Player 
 Context.fillStyle = "Black";
 Context.fillRect(50,playery,20,20);
@@ -104,13 +111,14 @@ movePlayer();
 gravity();
 checkDeath();
 
+if(startGame == true){
 topPipes[0].showtopPipe();
 topPipes[0].movetopPipe();
 bottomPipes[0].showbottomPipe();
 bottomPipes[0].movebottomPipe();
 //flyingEnemies[0].showEnemy();
 //flyingEnemies[0].moveEnemy();
-
+}
 }
 
 function checkDeath() {
@@ -138,6 +146,7 @@ onkeyup = function(event) {
     }
     function movePlayer() {
         if (keyboard[' '.charCodeAt(0)] && playery > 0) {
+            startGame = true;
             playerGravity = false;
             velocity = 0;
             playery -= 2

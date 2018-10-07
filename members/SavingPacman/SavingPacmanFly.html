@@ -1,9 +1,10 @@
 <html>
 <script>
 
+var playerVelocity = 0;
 var startGame = false;
 var enemyDir = 1;
-var keyboard = {}
+var keyboard = {};
 var playerGravity;
 var playery = 220;
 var topPipes = [];
@@ -13,7 +14,7 @@ var randomTopLength;
 var randomBottomLength;
 var pipeSpeed = 1.5;
 var gameLoop;
-var DistancePipes = 640 + 300
+var DistancePipes = 640 + 300;
 
 class flyingEnemy{
     constructor(enemyX,enemyY){
@@ -142,6 +143,7 @@ onkeydown = function(event) {
 onkeyup = function(event) {
     keyboard[event.keyCode] = false;
     playerGravity = true;
+    playerVelocity = 0
     gravity();
     }
     function movePlayer() {
@@ -149,7 +151,8 @@ onkeyup = function(event) {
             startGame = true;
             playerGravity = false;
             velocity = 0;
-            playery -= 2
+            playerVelocity += .02
+            playery -= playerVelocity
         }
     }
 

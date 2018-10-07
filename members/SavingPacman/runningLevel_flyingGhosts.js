@@ -9,6 +9,12 @@ class flyingGhost {
     }
 
     move() {
-        this.x -= 12;
+        this.x -= 11;
+    }
+    
+    hits() {
+        if ((blob.x + 50 > this.x) && (blob.x < this.x + 50) && (blob.y <= 380)) {
+            this.deathCounter = true;
+        }
     }
 }

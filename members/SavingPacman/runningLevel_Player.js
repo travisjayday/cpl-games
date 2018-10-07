@@ -38,11 +38,6 @@ class Player {
                 this.y += this.otherVel;
             }
 
-            // if (this.y >= 405) {
-            //     keyboard[38] = false;
-            //     this.y = 405;
-            // }
-
             //HITS FLOOR
             if (this.y > 405) {
                 keyboard[38] = false;

@@ -1,0 +1,165 @@
+<html>
+<script>
+
+var playerVelocity = 0;
+var startGame = false;
+var enemyDir = 1;
+var keyboard = {};
+var playerGravity;
+var playery = 220;
+var topPipes = [];
+var bottomPipes = [];
+var flyingEnemies = [];
+var randomTopLength;
+var randomBottomLength;
+var pipeSpeed = 1.5;
+var gameLoop;
+var DistancePipes = 640 + 300;
+
+class flyingEnemy{
+    constructor(enemyX,enemyY){
+        this.enemyX = enemyX
+        this.enemyY = enemyY
+    }
+    showEnemy(){
+        Context.fillStyle = "red"
+        Context.fillRect(this.enemyX,this.enemyY,20,20)
+    }
+    moveEnemy(){
+        this.enemyX -= 1
+        if(this.enemyX < -20){
+            flyingEnemies.length = 0;
+            flyingEnemies[0] = new flyingEnemy(1240,240)
+        }
+        this.enemyY -= enemyDir
+        if(this.enemyY < 0 || this.enemyY > 460){
+            enemyDir *= -1
+    }
+    }
+}
+
+class topPipe{
+    constructor(topPipex,topPipeHeight){
+        this.topPipex = topPipex
+        this.topPipeHeight = topPipeHeight
+    }
+    showtopPipe(){
+        Context.fillStyle = "LawnGreen"
+        Context.fillRect(this.topPipex,0,30,this.topPipeHeight)
+    }
+    movetopPipe(){  
+        this.topPipex -= pipeSpeed
+        if(this.topPipex < -330){
+            //pipeSpeed += .05
+            topPipes.length = 0;
+            randomTopLength = Math.random() * (400 - 60) + 60
+            topPipes[0] = new topPipe(640,randomTopLength) 
+    }
+    }
+}
+
+class bottomPipe{
+    constructor(bottomPipex, bottomPipeHeight){
+        this.bottomPipex = bottomPipex
+        this.bottomPipeHeight = bottomPipeHeight
+    }
+    showbottomPipe(){
+        Context.fillStyle = "LawnGreen"
+        Context.fillRect(this.bottomPipex,480 - this.bottomPipeHeight,30,this.bottomPipeHeight)
+    }
+    movebottomPipe(){
+        this.bottomPipex -= pipeSpeed
+        if(this.bottomPipex < -30){
+            bottomPipes.length = 0;
+            randomBottomLength = Math.random() * (440 - 80) + 80
+            bottomPipes[0] = new bottomPipe(DistancePipes,randomBottomLength)
+        }
+}
+}
+
+//STARTGAME
+function initCanvas(){
+
+canvasObject = document.getElementById("Canvas");
+Context = canvasObject.getContext("2d")
+
+
+randomTopLength = Math.random() * (440 - 60) + 60
+topPipes[0] = new topPipe(640,randomTopLength)
+randomBottomLength = Math.random() * (440 - 40) + 40
+bottomPipes[0] = new bottomPipe(DistancePipes, randomBottomLength)
+//flyingEnemies[0] = new flyingEnemy(1240,240)
+
+
+gameLoop = setInterval(draw, .05);
+}
+
+//DRAW CANVAS / PLAYER
+function draw(){
+//BG
+Context.fillStyle = "DeepSkyBlue";
+Context.fillRect(0,0,640,480);
+//Spacebar Pront
+if(startGame == false){
+    Context.fillStyle = "black"
+    Context.font = "35px Courier New"
+    Context.fillText("Press Spacerbar To Begin!",55, 450)
+}
+//Player 
+Context.fillStyle = "Black";
+Context.fillRect(50,playery,20,20);
+movePlayer();
+gravity();
+checkDeath();
+
+if(startGame == true){
+topPipes[0].showtopPipe();
+topPipes[0].movetopPipe();
+bottomPipes[0].showbottomPipe();
+bottomPipes[0].movebottomPipe();
+//flyingEnemies[0].showEnemy();
+//flyingEnemies[0].moveEnemy();
+}
+}
+
+function checkDeath() {
+if(playery + 20 > 480){
+    alert('dead')
+}
+}
+
+//"GRAVITY"
+function gravity(){
+if(playerGravity == true){
+    velocity +=.03
+    playery += velocity;
+}
+}
+
+//PLAYERY MOVEMENT
+onkeydown = function(event) {
+    keyboard[event.keyCode] = true;
+    }
+onkeyup = function(event) {
+    keyboard[event.keyCode] = false;
+    playerGravity = true;
+    playerVelocity = 0
+    gravity();
+    }
+    function movePlayer() {
+        if (keyboard[' '.charCodeAt(0)] && playery > 0) {
+            startGame = true;
+            playerGravity = false;
+            velocity = 0;
+            playerVelocity += .02
+            playery -= playerVelocity
+        }
+    }
+
+</script>
+<center>
+<body onload='initCanvas()'>
+<canvas id = 'Canvas' width='640px' height='480px'></canvas>
+</body>
+</center>
+</html>

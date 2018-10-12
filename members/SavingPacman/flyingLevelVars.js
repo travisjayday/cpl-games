@@ -1,0 +1,25 @@
+var playerVelocity = 0;
+var playerSpeed = .03;
+var startGame = false;
+var enemyDir = 1;
+var keyboard = {};
+var playerGravity;
+var playery = 220;
+var playerx = 50;
+var playerWidth = 20;
+var playerHeight = 20;
+var topPipes = [];
+var bottomPipes = [];
+var flyingEnemies = [];
+var topPipey = 0
+var randomTopLength;
+var randomBottomLength;
+var pipeSpeed = 1;
+var gameLoop;
+var screenHeight = 480;
+var screenWidth = 640;
+var DistancePipes = screenWidth + 300;
+var pipeWidth = 30;
+var enemyWidth = 20;
+var enemyHeight = 20;
+var bkgrndX = 0;

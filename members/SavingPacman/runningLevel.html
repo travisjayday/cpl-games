@@ -10,29 +10,46 @@
         var ctx;
         var keyboard = {};
         var bkgrndX = 0;
+        var bkgrndVel = -2;
+        var canvasWidth = 640;
+        var canvasHeight = 480;
         var blob = new Player();
-        var pits = [];
-        var ghosts = [];
-        var flyingGhosts = [];
+        var ghost = new midGhost(Math.floor(Math.random() * (2 * canvasWidth - canvasWidth) + canvasWidth));
+        var pit = new Pit(Math.floor(Math.random() * (2 * canvasWidth - canvasWidth) + canvasWidth));
+        var flyingGhost = new flyingGhosts(Math.floor(Math.random() * (2 * canvasWidth - canvasWidth) + canvasWidth));
         var deathCounter = false;
         var sameFrame = false;
         var frameCount = 1;
-        var randomGen = Math.floor(Math.random() * (10 - 5) + 5);
-        
+        var randomMidGhostGen = 0;
+        var randomPitGen = 0;
+        var randomHighGen = 0;
+        var enemyCounter = 0;
+        var lots = [1, 2, 3]
+        var randomSelector = Math.floor(Math.random() * lots.length);
+        var key = Math.floor(Math.random() * 3 + 1);
+        var index = 0;
 
-        //CREATES OBSTACLES
-        for (var i = 0; i < 1; i++) {
-            ghosts[i] = new midGhost(Math.floor(Math.random() * (1280 - 640) + 640));
-            pits[i] = new Pit(Math.floor(Math.random() * (960 - 640) + 640));
-            flyingGhosts[i] = new flyingGhost(Math.floor(Math.random() * (3200 - 2560) + 2560));
+        function chanceGenerator() {
+            index = randomSelector;
+            randomMidGhostGen = lots[index];
+            lots.splice(index, 1);
+            index = Math.floor(Math.random() * lots.length);
+            randomPitGen = lots[index];
+            lots.splice(index, 1);
+            index = Math.floor(Math.random() * lots.length);
+            randomHighGen = lots[index];
+            lots.splice(index, 1);
+            lots = [1, 2, 3]
         }
+
+        chanceGenerator();
 
         //INITIALIZES CANVAS
         function initCanvas() {
             var canvas = document.getElementById('canvas');
             ctx = canvas.getContext('2d');
             setInterval(function () {
-                if (ghosts[0].deathCounter || flyingGhosts[0].deathCounter) {
+                if (ghost.deathCounter || flyingGhost.deathCounter || blob.deathCounter) {
                     deathCounter = true;
                 }
             }, 20);
@@ -41,84 +58,64 @@
 
         //DRAWS
         function draw() {
-
             if (!deathCounter) {
 
                 //BACKGROUND
-                ctx.drawImage(document.getElementById('background'), bkgrndX, 0, 640, 480);
-                ctx.drawImage(document.getElementById('background'), bkgrndX + 640, 0, 640, 480);
-                bkgrndX -= 2;
-                if (bkgrndX + 640 < 0) {
+                ctx.drawImage(document.getElementById('background'), bkgrndX, 0, canvasWidth, canvasHeight);
+                ctx.drawImage(document.getElementById('background'), bkgrndX + canvasWidth, 0, canvasWidth, canvasHeight);
+                bkgrndX += bkgrndVel;
+                if (bkgrndX + canvasWidth < 0) {
                     bkgrndX = 0;
                 }
 
-                //SHOW PLAYER
-                blob.show();
-
                 //FLOOR
                 ctx.fillStyle = 'brown';
-                ctx.fillRect(0, 430, 640, 50);
+                ctx.fillRect(0, canvasHeight - 50, canvasWidth, 50);
 
                 //MIDGHOST OBJECTS DISPLAY
-                if (!sameFrame == true) {
-                    for (var i = 0; i < 1; i++) {
-                        if (ghosts.length > 0) {
-                            ghosts[i].show();
-                            ghosts[i].move();
-                            ghosts[i].hits();
-                        }
-
-                        if (ghosts[i].x + 75 < 0) {
-                            ghosts.pop();
-                            for (var i = 0; i < 1; i++) {
-                                ghosts[i] = new midGhost((Math.floor(Math.random() * (960 - 640) + 640)))
-                                frameCount += 1;
-                            }
-                        }
-                    }
+                if (randomMidGhostGen == key) {
+                    ghost.show();
+                    ghost.move();
+                    ghost.hits();
+                }
+                if (ghost.x + 75 < 0) {
+                    key = Math.floor(Math.random() * 3 + 1);
+                    chanceGenerator();
+                    ghost.x = Math.floor(Math.random() * (2 * canvasWidth - canvasWidth) + canvasWidth);
                 }
 
                 //PIT OBJECTS DISPLAY
-                if (frameCount % randomGen == 0 && frameCount != 0) {
-                    sameFrame = true;
-                    for (var i = 0; i < 1; i++) {
-                        if (pits.length > 0) {
-                            pits[i].show();
-                            pits[i].move();
-                        }
-
-                        if (pits[i].x + 150 < 0) {
-                            pits.pop();
-                            randomGen = Math.floor(Math.random() * (10 - 5) + 5);
-                            sameFrame = false;
-                            frameCount = 0;
-                            for (var i = 0; i < 1; i++) {
-                                pits[i] = new Pit(Math.floor(Math.random() * (960 - 640) + 640));
-                            }
-                        }
-                    }
+                if (randomPitGen == key) {
+                    pit.show();
+                    pit.move();
+                    pit.hits();
+                }
+                if (pit.x + 150 < 0) {
+                    key = Math.floor(Math.random() * 3 + 1);
+                    chanceGenerator();
+                    pit.x = Math.floor(Math.random() * (2 * canvasWidth - canvasWidth) + canvasWidth);
                 }
 
                 //HIGH GHOST OBJECTS DISPLAY
-                // for (var i = 0; i < 1; i++) {
-                //     if (flyingGhosts.length > 0) {
-                //         flyingGhosts[i].show();
-                //         flyingGhosts[i].move();
-                //         flyingGhosts[i].hits();
-                //     }
-
-                //     if (flyingGhosts[i].x + 50 < 0) {
-                //         flyingGhosts.pop();
-                //         for (var i = 0; i < 1; i++) {
-                //             flyingGhosts[i] = new flyingGhost(Math.floor(Math.random() * (3200 - 2560) + 2560));
-                //         }
-                //     }
-                // }
+                if (randomHighGen == key) {
+                    flyingGhost.show();
+                    flyingGhost.move();
+                    flyingGhost.hits();
+                }
+                if (flyingGhost.x + 50 < 0) {
+                    key = Math.floor(Math.random() * 3 + 1);
+                    chanceGenerator();
+                    flyingGhost.x = Math.floor(Math.random() * (canvasWidth - canvasWidth) + canvasWidth);
+                }
 
                 //PLAYER ACTIONS
                 blob.keyboardInput();
                 blob.jump();
                 blob.squish();
+                blob.dies();
+
+                //SHOW PLAYER
+                blob.show();
             }
         }
 
@@ -128,6 +125,8 @@
 <body onload='initCanvas()'>
     <canvas id='canvas' width='640px' height='480px'></canvas>
     <img hidden src='https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-442013.png' id='background'>
+    <img src='https://orig02.deviantart.net/d4f1/f/2015/129/1/4/pacman___blinky___red_ghost_by_charlychive-d8sqkcj.gif'
+        id='ghost'>
     <p>Use the 'UP' and 'DOWN' arrow keys ;)</p>
 </body>
 

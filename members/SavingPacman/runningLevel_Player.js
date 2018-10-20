@@ -2,15 +2,17 @@ class Player {
     constructor() {
         this.x = 50;
         this.y = 380;
+        this.height = 50;
         this.vel = 20;
         this.acc = 1;
         this.otherVel = 10;
         this.otherAcc = 0.5;
+        this.deathCounter = false;
     }
 
     show() {
         ctx.fillStyle = 'white';
-        ctx.fillRect(this.x, this.y, 50, 50);
+        ctx.fillRect(this.x, this.y, 50, this.height);
     }
 
     jump() {
@@ -33,9 +35,10 @@ class Player {
 
         //DUCKS
         if (keyboard[40]) {
-            if(this.y < 405) {
+            if (this.y < 405) {
                 this.otherVel += this.otherAcc;
                 this.y += this.otherVel;
+                this.height = 25;
             }
 
             //HITS FLOOR
@@ -53,6 +56,7 @@ class Player {
                 this.vel = 20;
                 this.acc = 1;
                 this.y = 380;
+                this.height = 50;
             }
         }
     }
@@ -68,6 +72,12 @@ class Player {
             if (event.keyCode == 40) {
                 keyboard[event.keyCode] = false;
             }
+        }
+    }
+
+    dies() {
+        if (this.y > 480) {
+            this.deathCounter = true;
         }
     }
 }

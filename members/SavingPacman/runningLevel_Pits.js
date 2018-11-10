@@ -2,6 +2,7 @@ class Pit {
     constructor(x, y) {
         this.x = x;
         this.y = y;
+        this.speed = 15;
     }
 
     show() {
@@ -10,6 +11,12 @@ class Pit {
     }
 
     move() {
-        this.x -= 7;
+        this.x -= this.speed;
+    }
+
+    hits() {
+        if ((blob.x > this.x) && ((blob.x + 50) < (this.x + 150)) && (blob.y + 50 >= 430)) {
+            blob.y += blob.vel;
+        }
     }
 }

@@ -1,6 +1,7 @@
 class midGhost {
     constructor(x) {
         this.x = x;
+        this.speed = 15;
         this.deadCounter = false;
     }
 
@@ -10,7 +11,7 @@ class midGhost {
     }
 
     move() {
-        this.x -= 7;
+        this.x -= this.speed;
     }
 
     hits() {

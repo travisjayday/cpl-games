@@ -1,11 +1,10 @@
 <html>
-
 <head>
     <title>Saving Pacman</title>
-    <script src='runningLevel_Player.js'></script>
-    <script src='runningLevel_Pits.js'></script>
-    <script src='runningLevel_midGhosts.js'></script>
-    <script src='runningLevel_flyingGhosts.js'></script>
+    <script src='player.js'></script>
+    <script src='pits.js'></script>
+    <script src='mid_ghost.js'></script>
+    <script src='flying_ghost.js'></script>
     <script>
         var ctx;
         var keyboard = {};
@@ -121,13 +120,10 @@
 
     </script>
 </head>
-
 <body onload='initCanvas()'>
     <canvas id='canvas' width='640px' height='480px'></canvas>
     <img hidden src='https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-442013.png' id='background'>
-    <img src='https://orig02.deviantart.net/d4f1/f/2015/129/1/4/pacman___blinky___red_ghost_by_charlychive-d8sqkcj.gif'
-        id='ghost'>
+    <img src='https://orig02.deviantart.net/d4f1/f/2015/129/1/4/pacman___blinky___red_ghost_by_charlychive-d8sqkcj.gif' id='ghost'>
     <p>Use the 'UP' and 'DOWN' arrow keys ;)</p>
 </body>
-
 </html>

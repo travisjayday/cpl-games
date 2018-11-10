@@ -1,0 +1,40 @@
+<html>
+	<head>
+		<script type="text/javascript" src="scores/score_tracker.js"></script>
+		<script>
+			function update_ui() {
+				l = ["run", "fly", "swim"]
+				l.forEach(function(s) {
+					txt = document.getElementById(s + '_score'); 
+					txt.innerHTML = s + " score: " + load_score(s); 
+				})
+			}
+			document.onclick = function() {
+				update_ui();
+			}
+		</script>
+
+		<style>
+			h1 {
+				display: inline-block;
+			}
+		</style>
+	</head>
+	<body onload="update_ui()">
+		<a href='level/run/run_level.html'>RUN Level</a>
+        <a href='level/fly/fly_level.html'>FLY Level</a>
+		<br>
+		<hr>
+
+ 		<button onclick='save_score("run", 10)'>Add Score of 10 to Run</button>
+		<h1 id="run_score">run score</h1>
+		<br>
+		<button onclick='save_score("fly", 10)'>Add Score of 10 to Fly</button>
+		<h1 id="fly_score">fly score</h1>
+		<br>
+		<button onclick='save_score("swim", 10)'>Add Score of 10 to Swim</button>
+		<h1 id="swim_score">fly score</h1>
+	</body>
+</html>
+
+

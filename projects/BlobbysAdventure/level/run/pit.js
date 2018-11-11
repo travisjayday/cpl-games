@@ -6,7 +6,7 @@ class Pit {
     }
 
     show() {
-        ctx.fillStyle = 'green';
+        ctx.fillStyle = '#4c8b3a';
         ctx.fillRect(this.x, 430, 150, 50);
     }
 

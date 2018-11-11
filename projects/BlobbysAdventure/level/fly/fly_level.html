@@ -15,7 +15,7 @@
 		randomTopLength = Math.random() * (screenHeight - 60) + 60
 		topPipes[0] = new topPipe(640,randomTopLength)
 		randomBottomLength = Math.random() * (screenHeight - 60) + 60
-		bottomPipes[0] = new bottomPipe(DistancePipes, randomBottomLength)
+		bottomPipes[0] = new BottomPipe(DistancePipes, randomBottomLength)
 		flyingEnemies[0] = new flyingEnemy(1240,240)
 		
 		gameLoop = setInterval(draw, .05);

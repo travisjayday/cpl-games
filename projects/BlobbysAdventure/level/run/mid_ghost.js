@@ -7,7 +7,7 @@ class midGhost {
 
     show() {
         ctx.fillStyle = 'purple';
-        ctx.fillRect(this.x, 385, 75, 25);
+        ctx.fillRect(this.x, 385, 75, 55);
     }
 
     move() {
@@ -15,8 +15,7 @@ class midGhost {
     }
 
     hits() {
-        if ((blob.x + 50 > this.x) && (blob.x < this.x + 75) && (blob.y >= 380)) {
+        if ((blob.x + 50 > this.x) && (blob.x < this.x + 75) && (blob.y >= 380))
             this.deathCounter = true;
-        }
     }
 }

@@ -47,18 +47,14 @@
         function initCanvas() {
             var canvas = document.getElementById('canvas');
             ctx = canvas.getContext('2d');
-            setInterval(function () {
-                if (ghost.deathCounter || flyingGhost.deathCounter || blob.deathCounter) {
-                    deathCounter = true;
-                }
-            }, 20);
             setInterval(draw, 20);
         }
 
         //DRAWS
         function draw() {
+			// if alive, 
+			// TODO: do not use document get element by idea; rather use new Image() in initCanvas() and load the image once
             if (!deathCounter) {
-
                 //BACKGROUND
                 ctx.drawImage(document.getElementById('background'), bkgrndX, 0, canvasWidth, canvasHeight);
                 ctx.drawImage(document.getElementById('background'), bkgrndX + canvasWidth, 0, canvasWidth, canvasHeight);
@@ -67,6 +63,7 @@
                     bkgrndX = 0;
                 }
 
+				// TODO: add variable height of the ground (instead of 50px) 
                 //FLOOR
                 ctx.fillStyle = 'brown';
                 ctx.fillRect(0, canvasHeight - 50, canvasWidth, 50);
@@ -77,6 +74,8 @@
                     ghost.move();
                     ghost.hits();
                 }
+
+				// TODO: instead of using Math.random() arithmetic, create a separate function randint(range) 
                 if (ghost.x + 75 < 0) {
                     key = Math.floor(Math.random() * 3 + 1);
                     chanceGenerator();
@@ -89,7 +88,9 @@
                     pit.move();
                     pit.hits();
                 }
-                if (pit.x + 150 < 0) {
+
+				// pit outsid of the screen 
+                if (pit.x + pit.width < 0) {
                     key = Math.floor(Math.random() * 3 + 1);
                     chanceGenerator();
                     pit.x = Math.floor(Math.random() * (2 * canvasWidth - canvasWidth) + canvasWidth);
@@ -101,6 +102,8 @@
                     flyingGhost.move();
                     flyingGhost.hits();
                 }
+
+				// TODO: substitue 50 with ghost width
                 if (flyingGhost.x + 50 < 0) {
                     key = Math.floor(Math.random() * 3 + 1);
                     chanceGenerator();
@@ -116,6 +119,13 @@
                 //SHOW PLAYER
                 blob.show();
             }
+
+			// check if dead
+			if (ghost.deathCounter 
+				|| flyingGhost.deathCounter 
+				|| blob.deathCounter) {
+            	deathCounter = true;
+        	}
         }
 
     </script>

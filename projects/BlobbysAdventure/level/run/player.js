@@ -66,6 +66,8 @@ class Player {
         if (keyboard[40] && this.ducking == false) {
 			this.ducking = true; 
           	this.height = .6 * this.originalHeight;
+			
+			// adjust position because of new height
 			var dy = this.originalHeight - this.height; 
 			this.y += dy;
         }
@@ -78,8 +80,11 @@ class Player {
 		// if down not pressed and still ducking, unduck
 		if (!keyboard[40] && this.ducking == true){
 			this.ducking = false;
+
+			// adjust position because of new hieght
 			var dy = this.originalHeight - this.height; 
 			this.y -= dy;
+
 			this.height = this.originalHeight; 
 		}
     }

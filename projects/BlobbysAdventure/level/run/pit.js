@@ -3,11 +3,13 @@ class Pit {
         this.x = x;
         this.y = y;
         this.speed = 15;
+		this.floor = 480 - 50; 
+		this.width = 150;
     }
 
     show() {
         ctx.fillStyle = '#4c8b3a';
-        ctx.fillRect(this.x, 430, 150, 50);
+        ctx.fillRect(this.x, this.floor, this.width, 50);
     }
 
     move() {
@@ -15,8 +17,11 @@ class Pit {
     }
 
     hits() {
-        if ((blob.x > this.x) && ((blob.x + 50) < (this.x + 150)) && (blob.y + 50 >= 430)) {
-            blob.y += blob.vel;
+        if ((blob.x >= this.x) && 
+			((blob.x + blob.width) < (this.x + this.width)) && 
+			(blob.y + blob.height >= this.floor -10)) {
+            blob.y += blob.vel * 2;
+			if (blob.jumping) blob.y -= blob.vel * 4
         }
     }
 }

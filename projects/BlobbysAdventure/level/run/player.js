@@ -15,6 +15,7 @@ class Player {
 		this.image = new Image(); 
 		this.image.src = "../../res/sprites/blob_running.png"; 
 		this.frame = 0; 
+		this.width = this.image.width / 8; 
     }
 
     show() {
@@ -24,13 +25,13 @@ class Player {
 		// draw sprite from spritesheet depending on which frame
 		// sprite sheet is 64*12x64 with 8 frames
 		ctx.drawImage(this.image, 
-			(this.image.width / 8) * this.frame, 
+			this.width * this.frame, 
 			0, 
-			this.image.width / 8, 
+			this.width, 
 			this.image.height, 
-			this.x - 40, // offset x to the left a bit bec sprite is not a perfect square
+			this.x, // offset x to the left a bit bec sprite is not a perfect square
 			this.y, 
-			this.image.width / 8, 
+			this.width, 
 			this.height
 		); 
 
@@ -71,7 +72,7 @@ class Player {
 
 		// if down pressed and jumping, fall down faster
 		if (keyboard[40] && this.jumping) {
-			this.vel -= 1; 
+			this.vel -= 3; 
 		}
 
 		// if down not pressed and still ducking, unduck

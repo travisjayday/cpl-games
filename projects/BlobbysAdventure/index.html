@@ -1,113 +1,51 @@
 <html>
 	<head>
-		<script type="text/javascript" src="scores/score_tracker.js"></script>
-		<script type="text/javascript" src="level/run/player.js"></script>
-		<script>
-			canvas = null
-			ctx = null
-			blob = {} 
-			menu_borders = null
-
-			function update_ui() {
-				l = ["run", "fly", "swim"]
-				l.forEach(function(s) {
-					txt = document.getElementById(s + '_score'); 
-					txt.innerHTML = s + " score: " + load_score(s); 
-				})
-			}
-
-			function init() {
-				update_ui(); 
-				canvas = document.getElementById("myCanvas");
-				ctx = canvas.getContext("2d");
-				
-				b_width = canvas.width / 3
-				menu_borders = [0, b_width, b_width * 2, canvas.width] 
-
-				ctx.fillStyle = "black"; 
-				ctx.fillRect(0, 0, canvas.width, canvas.height); 
-				ctx.fillStyle = "white";
-				ctx.font = "30px Helvetica";
-				ctx.fillText("Loading...", 20, 50);
-				img = new Image();
-				img.onload = function () { 
-					ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
-				}
-				img.src = "res/sprites/menu/loading_screen.png";
-				setTimeout(load_menu, 2000)
-
-				blob.image = new Image(); 
-				blob.image.src = "res/sprites/blob_running.png"; 
-				blob.frame = 0; 
-				blob.width = blob.image.width / 8; 
-				blob.height = blob.image.height;
-				//#alert(blob.width + "X" + blob.height)
-				blob.x = 100;
-				blob.y = canvas.height / 2 - blob.height / 2;
-				blob.dir = "left"
-			}
-
-			function load_menu() {
-				ctx.fillStyle = "black"
-				ctx.fillRect(0, 0, canvas.width, canvas.height); 
-				setInterval(draw, 20);
-			}
-
-			function draw() {
-				ctx.fillStyle = "black"
-				ctx.fillRect(0, 0, canvas.width, canvas.height); 
-
-				ctx.drawImage(blob.image, 
-					blob.width * blob.frame, 
-					0, 
-					blob.width, 
-					blob.image.height, 
-					blob.x, // offset x to the left a bit bec sprite is not a perfect square
-					blob.y, 
-					blob.width, 
-					blob.height
-				); 
-				// increment frames
-				blob.frame++; 
-				if (blob.frame == 8) blob.frame = 0; 
-			}
-
-			document.onclick = function() {
-				update_ui();
-			}
-
-			document.addEventListener("keypress", function (e) {
-				// move left
-				if (e.keyCode == 37) {
-					blob.x -= 40
-				}
-				else if (e.keyCode == 39) {
-					blob.x += 40
-				}
-			})
-		</script>
-
 		<style>
-			h1 {
-				display: inline-block;
+			iframe {
+				border: none;
+				overflow: hidden;
 			}
 		</style>
+		<script>
+			function init() {
+				// init menu with splash
+				document.getElementById("myFrame").contentWindow.init(true);
+			}
+			
+			window.onmessage = function(e) {
+				// split message into its commands
+				// api: "command,data"
+				msg = e.data.split(',');
+				frame = document.getElementById("myFrame");
+				
+				// check command
+				if (msg[0] == "loadLevel") {
+					switch (msg[1]) {
+						case "run": 
+							frame.src = "./level/run/run_level.html"
+							break;
+						case "swim":
+							
+							break;
+						case "fly":
+							frame.src = "./level/fly/fly_level.html";
+							
+							break;
+					}
+				}
+				// return means blobby has died and must return to the main menu
+				else if (msg[0] == "return") {
+					// re-init menu without splash
+					frame.addEventListener('load', function(){
+						frame.contentWindow.init(false);
+					})
+					frame.src = "./level/menu/menu.html"
+				}
+			}
+		</script>
 	</head>
 	<body onload="init()">
-		<canvas id="myCanvas" width=640 height=480></canvas>
-		<a href='level/run/run_level.html'>RUN Level</a>
-        <a href='level/fly/fly_level.html'>FLY Level</a>
-		<br>
-		<hr>
-
- 		<button onclick='save_score("run", 10)'>Add Score of 10 to Run</button>
-		<h1 id="run_score">run score</h1>
-		<br>
-		<button onclick='save_score("fly", 10)'>Add Score of 10 to Fly</button>
-		<h1 id="fly_score">fly score</h1>
-		<br>
-		<button onclick='save_score("swim", 10)'>Add Score of 10 to Swim</button>
-		<h1 id="swim_score">fly score</h1>
+		<iframe id="myFrame" src="./level/menu/menu.html" scrolling="no" width="640" height="480"></iframe>
 	</body>
 </html>
 

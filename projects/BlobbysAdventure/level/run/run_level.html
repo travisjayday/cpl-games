@@ -5,6 +5,7 @@
     <script src='pit.js'></script>
     <script src='mid_ghost.js'></script>
     <script src='flying_ghost.js'></script>
+    <script src='scores/score_tracker.js'></script>
     <script>
         var ctx;
         var keyboard = {};
@@ -27,6 +28,8 @@
         var randomSelector = Math.floor(Math.random() * lots.length);
         var key = Math.floor(Math.random() * 3 + 1);
         var index = 0;
+        var sTime;
+        var diff;
 
         function chanceGenerator() {
             index = randomSelector;
@@ -39,6 +42,23 @@
             randomHighGen = lots[index];
             lots.splice(index, 1);
             lots = [1, 2, 3]
+        }
+
+        function startTime() {
+            sTime = new Date();
+        }
+
+        function endTime() {
+            var eTime = new Date();
+            diff = eTime - sTime;
+            diff /= 1000;
+            diff = Math.round(diff);
+        }
+
+        function addScore() {
+            if (diff > 10) {
+                save_score("run", diff)
+            }
         }
 
         chanceGenerator();
@@ -131,6 +151,7 @@
 				|| flyingGhost.deathCounter 
 				|| blob.deathCounter) && !deathCounter) {
             	deathCounter = true;
+                addScore();
 				// TODO: handle XP addition here
 				
 				// blobby died

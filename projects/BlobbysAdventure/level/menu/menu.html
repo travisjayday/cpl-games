@@ -8,20 +8,23 @@
 			menu_borders = null;
 			controls = null;
 			splash = true;
+			menuback = null; 
+			wavepos = 0;
+			flyingOffset = 0; 
 
-			function update_ui() {
+			/*function update_ui() {
 				l = ["run", "fly", "swim"]
 				l.forEach(function(s) {
 					txt = document.getElementById(s + '_score'); 
 					txt.innerHTML = s + " score: " + load_score(s); 
 				})
-			}
+			}*/
 
 			// takes boolean arg whether to show splash screen
 			function init(s) {
 				splash = s;
 				draw.called = false;
-				update_ui(); 
+				//update_ui(); 
 				canvas = document.getElementById("myCanvas");
 				ctx = canvas.getContext("2d");
 				
@@ -33,6 +36,7 @@
 				ctx.fillStyle = "white";
 				ctx.font = "30px Helvetica";
 				ctx.fillText("Loading...", 20, 50);
+
 				img = new Image();
 				img.loaded = false
 				img.onload = function () { 
@@ -41,6 +45,14 @@
 					checkLoaded();
 				}
 				img.src = "../../res/sprites/menu/loading_screen.png";
+
+				menuback = new Image(); 
+				menuback.loaded = false;
+				menuback.onload = function () {
+					menuback.loaded = true;
+					checkLoaded();
+				}
+				menuback.src = "../../res/sprites/menu/menu_background.png";
 				
 				controls = new Image(); 
 				controls.loaded = false
@@ -57,8 +69,8 @@
 					blob.width = blob.image.width / 8; 
 					blob.height = blob.image.height / 2;
 					//#alert(blob.width + "X" + blob.height)
-					blob.x = 100;
-					blob.y = canvas.height / 2 - blob.height / 2;
+					blob.x = canvas.width / 2 - blob.width  /2;
+					blob.y = canvas.height - canvas.height * .442;
 					blob.dir = "left"
 					blob.loaded = true
 					checkLoaded();
@@ -68,7 +80,7 @@
 			
 			function checkLoaded() {
 				
-				if (blob.loaded && controls.loaded && img.loaded) {
+				if (blob.loaded && controls.loaded && img.loaded && menuback.loaded) {
 					if (splash) {
 						setTimeout(load_menu, 2000);
 					}
@@ -87,6 +99,15 @@
 				setInterval(draw, 20);
 			}
 
+			function swim_func() {
+				// func: e^(kx) -1
+				//k = Math.log(canvas.height * 0.443 + 1) / (canvas.width * 0.334)
+				//y  = -Math.pow(10, -k * blob.x); 
+				y = Math.sqrt(1.83 * (canvas.width * 0.654 - blob.x)) * canvas.height * 0.033
+				console.log(y)
+				return y 
+			}
+
 			function draw() {
 				ctx.fillStyle = "black"
 				ctx.fillRect(0, 0, canvas.width, canvas.height); 
@@ -96,6 +117,28 @@
 					ctx.fillRect(menu_borders[i], 0, canvas.width / 3, canvas.height)
 				
 				}
+				
+				// draw waves
+				colors = ["#748BF0", "#3D48F7", "#1010FF"]
+				for (var wave = 0; wave < 3; wave++) {
+					ctx.beginPath(); 
+					ctx.moveTo(canvas.width * 0.4, canvas.height); 
+					ctx.lineTo(0, canvas.height); 
+					ctx.lineTo(0, canvas.height * 0.85 + wave * 20); 
+					dy = 10
+					for (var i = 0; i < canvas.width * 0.4; i += dy) {
+						ctx.lineTo(i, canvas.height * 0.85 + wave * 20 + 5 *  Math.sin(i * 10 + wavepos)); 
+					}
+					ctx.fillStyle = colors[wave];
+					ctx.fill()
+				}
+				wavepos += 0.4; 
+
+
+				// draw background
+				ctx.drawImage(menuback, 
+					0, 0, menuback.width, menuback.height,
+					0, 0, canvas.width, canvas.height);
 				
 				p = 0.3 // percent of width screen space controls should use
 				scaled_w = canvas.width * p
@@ -122,8 +165,14 @@
 				// increment frames
 				blob.frame++; 
 				if (blob.frame == 8) blob.frame = 0; 
-				
-				drawXP();
+
+				if (blob.x > canvas.width * 0.6666666 + 10) 
+					blob.y += -Math.sin(flyingOffset) * 4
+				else if (blob.x > canvas.width * 0.33333) 
+					blob.y = canvas.height - canvas.height * .442;
+				else 
+					blob.y = swim_func();
+				flyingOffset += 0.1; 
 			}
 			
 			function selectLevel() {
@@ -141,7 +190,7 @@
 					// right most select
 					level = "fly"
 				}
-				window.top.postMessage("loadLevel," + level)
+				window.top.postMessage("loadLevel," + level, "*")
 			}
 
 			document.onclick = function() {
@@ -150,12 +199,13 @@
 
 			window.addEventListener("keydown", function (e) {
 				// move left
-				if (e.which == 37 && blob.x > blob.width) {
-					blob.x -= blob.width;
+				if (e.which == 37 && blob.x > 0) {
+					blob.x -= blob.width / 4;
 					blob.dir = "left";
 				}
-				else if (e.which == 39 && blob.x < canvas.width - 2 * blob.width) {
-					blob.x += blob.width;
+				// move right
+				else if (e.which == 39 && blob.x < canvas.width - blob.width) {
+					blob.x += blob.width /4;
 					blob.dir = "right";
 				}
 				else if (e.which == 38) {
@@ -172,10 +222,13 @@
 			body {
 				margin: 0
 			}
+
+			html, body { overflow: hidden; }
 		</style>
 	</head>
 	<body>
 		<canvas id="myCanvas" width=640 height=480></canvas>
+	<!-- 
 		<a href='level/run/run_level.html'>RUN Level</a>
         <a href='level/fly/fly_level.html'>FLY Level</a>
 		<br>
@@ -189,6 +242,7 @@
 		<br>
 		<button onclick='save_score("swim", 10)'>Add Score of 10 to Swim</button>
 		<h1 id="swim_score">fly score</h1>
+	-->
 	</body>
 </html>
 

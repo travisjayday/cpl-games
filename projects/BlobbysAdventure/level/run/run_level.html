@@ -58,7 +58,8 @@
         function addScore() {
             if (diff > 10) {
                 save_score("run", diff)
-                document.getElementById('score').innerHTML = diff;
+                ctx.font = "30px Arial";
+                ctx.fillText(Integer.tostring(diff),10,50);
             }
         }
 

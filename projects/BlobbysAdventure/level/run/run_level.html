@@ -136,12 +136,17 @@
 				// blobby died
 				// go back to menu in 2 seconds
 				setTimeout(function() {
-					window.top.postMessage("return");
+					window.top.postMessage("return", "*");
 				}, 1000) 
         	}
         }
 
     </script>
+	<style>
+		body {
+			margin: 0
+		}
+	</style>
 </head>
 <body onload='initCanvas()'>
     <canvas id='canvas' width='640px' height='480px'></canvas>

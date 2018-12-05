@@ -1,0 +1,76 @@
+<html>
+<head>
+	<script type="text/javascript" src="player.js"></script>
+	<script type="text/javascript" src="background.js"></script>
+	<script>
+		var canvas, ctx;
+		var player, background; 
+		var keyboard = [];		// keeps track of input keys
+		var started = false; 	// keeps track of wheter game has started 
+
+		function init(width, height) {
+			// create canvas 
+			canvas = document.createElement("CANVAS");
+			ctx = canvas.getContext("2d");
+			canvas.width = width;
+			canvas.height = height;
+			document.body.appendChild(canvas);
+
+			// default loading screen 
+			ctx.fillStyle = "black"
+			ctx.fillRect(0, 0, canvas.width, canvas.height)
+			ctx.fillStyle = "white";
+			ctx.font = "30px Helvetica";
+			ctx.fillText("Loading...", 20, 50);
+
+			// create objects and wait for images to load
+			player = new Player(canvas.width, canvas.height, keyboard, function () {
+				player.width = player.image.width / 4; 
+				player.height = player.image.height; 
+				player.loaded = true;
+				checkLoaded()			
+			});
+
+			background = new Background(canvas.width, canvas.height, function() {
+				background.loaded = true;
+				checkLoaded(); 
+			});
+		}
+
+		// check if all is loaded; if yes, start game
+		function checkLoaded() {
+			if (player.loaded && background.loaded && !started) {
+				setInterval(draw, 16); 
+				started = true;
+			}
+		}
+	
+		// game loop
+		function draw() {
+			ctx.fillStyle = "black"
+			ctx.fillRect(0, 0, canvas.width, canvas.height)
+			
+			background.update(); 
+			player.move();
+			player.show();
+
+		}
+
+		// keyboard handling
+		window.onkeydown = function (event) {
+			keyboard[event.keyCode] = true;
+		}
+
+		window.onkeyup = function (event) {
+			keyboard[event.keyCode] = false;
+		}
+	</script>
+	<style>
+		body {
+			margin: 0;
+		}
+	</style>
+</head>
+<body onload="init(640, 480)">
+</body>
+</html>

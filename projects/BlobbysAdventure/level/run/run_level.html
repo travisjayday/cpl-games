@@ -58,6 +58,7 @@
         function addScore() {
             if (diff > 10) {
                 save_score("run", diff)
+                document.getElementById('score').innerHTML = diff;
             }
         }
 
@@ -172,6 +173,6 @@
 <body onload='initCanvas()'>
     <canvas id='canvas' width='640px' height='480px'></canvas>
     <img hidden src='https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-442013.png' id='background'>
-    <p id='score'>Score</p>
+    <p id='score'>0</p>
 </body>
 </html>

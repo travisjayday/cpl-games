@@ -4,6 +4,7 @@ class Player {
 		this.floor = 480 - 50;
 		this.originalHeight = 64;
 		this.height = this.originalHeight; 
+		this.width = 0
 		this.x = 50;
 		this.y = this.floor - this.height;
 		this.vel = 20;
@@ -12,27 +13,29 @@ class Player {
 		this.ducking = false; 
 		this.jumping = false;
 		
+		// true when image loads
+		this.loaded = false; 
+		
 		this.image = new Image(); 
-		this.image.src = "../../res/sprites/blob_running.png"; 
 		this.frame = 0; 
-		this.width = this.image.width / 8; 
 	}
 
 	show() {
+		if (this.loaded == false) alert("ERROR")
 		//ctx.fillStyle = 'white';
 		//ctx.fillRect(this.x, this.y, 50, this.height);
 
 		// draw sprite from spritesheet depending on which frame
 		// sprite sheet is 64*12x64 with 8 frames
 		ctx.drawImage(this.image, 
-		this.width * this.frame, 
-		0, 
-		this.width, 
-		this.image.height, 
-		this.x, // offset x to the left a bit bec sprite is not a perfect square
-		this.y, 
-		this.width, 
-		this.height
+			this.width * this.frame, 
+			0, 
+			this.width, 
+			this.image.height, 
+			this.x, // offset x to the left a bit bec sprite is not a perfect square
+			this.y, 
+			this.width, 
+			this.height
 		); 
 
 		// increment frames

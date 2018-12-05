@@ -1,0 +1,195 @@
+<html>
+	<head>
+		<script type="text/javascript" src="../../scores/score_tracker.js"></script>
+		<script>
+			canvas = null;
+			ctx = null;
+			blob = {};
+			menu_borders = null;
+			controls = null;
+			splash = true;
+
+			function update_ui() {
+				l = ["run", "fly", "swim"]
+				l.forEach(function(s) {
+					txt = document.getElementById(s + '_score'); 
+					txt.innerHTML = s + " score: " + load_score(s); 
+				})
+			}
+
+			// takes boolean arg whether to show splash screen
+			function init(s) {
+				splash = s;
+				draw.called = false;
+				update_ui(); 
+				canvas = document.getElementById("myCanvas");
+				ctx = canvas.getContext("2d");
+				
+				b_width = canvas.width / 3
+				menu_borders = [0, b_width, b_width * 2, canvas.width] 
+
+				ctx.fillStyle = "black"; 
+				ctx.fillRect(0, 0, canvas.width, canvas.height); 
+				ctx.fillStyle = "white";
+				ctx.font = "30px Helvetica";
+				ctx.fillText("Loading...", 20, 50);
+				img = new Image();
+				img.loaded = false
+				img.onload = function () { 
+					if (splash) ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
+					img.loaded = true;
+					checkLoaded();
+				}
+				img.src = "../../res/sprites/menu/loading_screen.png";
+				
+				controls = new Image(); 
+				controls.loaded = false
+				controls.onload = function () {
+					controls.loaded = true;
+					checkLoaded();
+				}
+				controls.src = "../../res/sprites/menu/controls.png";
+
+				blob.image = new Image(); 
+				blob.loaded = false
+				blob.image.onload = function () { 
+					blob.frame = 0; 
+					blob.width = blob.image.width / 8; 
+					blob.height = blob.image.height / 2;
+					//#alert(blob.width + "X" + blob.height)
+					blob.x = 100;
+					blob.y = canvas.height / 2 - blob.height / 2;
+					blob.dir = "left"
+					blob.loaded = true
+					checkLoaded();
+				}
+				blob.image.src = "../../res/sprites/menu/blob_menu.png"; 
+			}
+			
+			function checkLoaded() {
+				
+				if (blob.loaded && controls.loaded && img.loaded) {
+					if (splash) {
+						setTimeout(load_menu, 2000);
+					}
+					else {
+						if (!draw.called) {
+							setInterval(draw, 20);
+							draw.called = true;
+						}
+					}
+				}
+			}
+
+			function load_menu() {
+				ctx.fillStyle = "black"
+				ctx.fillRect(0, 0, canvas.width, canvas.height); 
+				setInterval(draw, 20);
+			}
+
+			function draw() {
+				ctx.fillStyle = "black"
+				ctx.fillRect(0, 0, canvas.width, canvas.height); 
+				colors = ["red", "green", "blue"]
+				for (var i = 0; i < 3; i++) {
+					ctx.fillStyle = colors[i]
+					ctx.fillRect(menu_borders[i], 0, canvas.width / 3, canvas.height)
+				
+				}
+				
+				p = 0.3 // percent of width screen space controls should use
+				scaled_w = canvas.width * p
+				scaled_h = (scaled_w / controls.width) * controls.height // to maintrain aspect
+				
+				// draw controls
+				ctx.drawImage(
+					controls, 0, 0, controls.width, controls.height,
+					canvas.width / 2 - scaled_w / 2, canvas.height - scaled_h - canvas.height * 0.02,
+					scaled_w, scaled_h)
+				
+				// draw blobby
+				offset = blob.dir == "left"? blob.height : 0
+				ctx.drawImage(blob.image, 
+					blob.width * blob.frame, 
+					offset, 
+					blob.width, 
+					blob.image.height / 2, 
+					blob.x,
+					blob.y, 
+					blob.width, 
+					blob.height
+				); 
+				// increment frames
+				blob.frame++; 
+				if (blob.frame == 8) blob.frame = 0; 
+				
+				drawXP();
+			}
+			
+			function selectLevel() {
+				pos = blob.x + blob.width / 2
+				level = ""
+				if (pos < menu_borders[1]) {
+					// left most select
+					level = "swim";
+				}
+				else if (pos < menu_borders[2]) {
+					// middle select
+					level = "run"
+				}
+				else if (pos < menu_borders[3]) {
+					// right most select
+					level = "fly"
+				}
+				window.top.postMessage("loadLevel," + level)
+			}
+
+			document.onclick = function() {
+				update_ui();
+			}
+
+			window.addEventListener("keydown", function (e) {
+				// move left
+				if (e.which == 37 && blob.x > blob.width) {
+					blob.x -= blob.width;
+					blob.dir = "left";
+				}
+				else if (e.which == 39 && blob.x < canvas.width - 2 * blob.width) {
+					blob.x += blob.width;
+					blob.dir = "right";
+				}
+				else if (e.which == 38) {
+					selectLevel();
+				}
+			}, false)
+		</script>
+
+		<style>
+			h1 {
+				display: inline-block;
+			}
+			
+			body {
+				margin: 0
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width=640 height=480></canvas>
+		<a href='level/run/run_level.html'>RUN Level</a>
+        <a href='level/fly/fly_level.html'>FLY Level</a>
+		<br>
+		<hr>
+
+ 		<button onclick='save_score("run", 10)'>Add Score of 10 to Run</button>
+		<h1 id="run_score">run score</h1>
+		<br>
+		<button onclick='save_score("fly", 10)'>Add Score of 10 to Fly</button>
+		<h1 id="fly_score">fly score</h1>
+		<br>
+		<button onclick='save_score("swim", 10)'>Add Score of 10 to Swim</button>
+		<h1 id="swim_score">fly score</h1>
+	</body>
+</html>
+
+

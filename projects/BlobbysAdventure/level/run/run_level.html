@@ -30,6 +30,7 @@
         var index = 0;
         var sTime;
         var diff;
+        var score = load_score("run");
 
         function chanceGenerator() {
             index = randomSelector;
@@ -57,9 +58,7 @@
 
         function addScore() {
             if (diff > 10) {
-                save_score("run", diff)
-                ctx.font = "30px Arial";
-                ctx.fillText(Integer.tostring(diff),10,50);
+                save_score("run", diff);
             }
         }
 
@@ -73,7 +72,8 @@
 			blob.image.onload = function() {
 				blob.loaded = true;
 				blob.width = blob.image.width / 8; 
-				setInterval(draw, 20);
+                setInterval(draw, 20);
+                
 			}
 			blob.image.src = "../../res/sprites/blob_running.png"; 
         }
@@ -90,6 +90,9 @@
                 if (bkgrndX + canvasWidth < 0) {
                     bkgrndX = 0;
                 }
+
+                ctx.font = "30px Arial";
+                ctx.fillText(Integer.tostring(score),10,50);
 
 				// TODO: add variable height of the ground (instead of 50px) 
                 //FLOOR

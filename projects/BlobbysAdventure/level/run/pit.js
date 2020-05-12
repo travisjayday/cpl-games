@@ -8,7 +8,7 @@ class Pit {
     }
 
     show() {
-        ctx.fillStyle = '#4c8b3a';
+        ctx.fillStyle = '#85e34d';
         ctx.fillRect(this.x, this.floor, this.width, 50);
     }
 
